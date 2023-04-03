@@ -134,3 +134,6 @@ select next value for tb_pergunta_seq [90036-214]
 2023-04-03 02:57:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLDataException: Value too long for column "LISTA_DE_RESPOSTA CHARACTER VARYING(255)": "U&'Muito prazer, meu nome \\00e9 HugoIII, tenho 20 anos, 1,82m de altura, cabelo ... (329)"; SQL statement:
 insert into tb_pergunta (id, lista_de_resposta, pergunta) values (default, ?, ?) [22001-214]
+2023-04-03 08:37:29 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TB_RESPOSTA TB_PERGUNTA_LISTA_DE_RESPOSTA [*]TB_PERGUNTA"; SQL statement:
+SELECT * FROM TB_RESPOSTA TB_PERGUNTA_LISTA_DE_RESPOSTA TB_PERGUNTA [42000-214]

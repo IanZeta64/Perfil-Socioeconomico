@@ -27,6 +27,13 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
         return new ResponseEntity<>(errorMessage, httpStatus);
     }
 
+    @ExceptionHandler(QuestionNotFoundException.class)
+    public ResponseEntity<Object> handleDuplicatedEmailException(QuestionNotFoundException ex) {
+        String errorMessage = ex.getMessage();
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+        return new ResponseEntity<>(errorMessage, httpStatus);
+    }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
