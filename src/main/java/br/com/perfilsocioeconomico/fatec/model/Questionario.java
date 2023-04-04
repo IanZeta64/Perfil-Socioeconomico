@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,9 +23,12 @@ public class Questionario {
     private Long id;
 
     @OneToMany
-    @JoinColumn(name = "pergunta_id")
+    @JoinColumn(name = "lista_de_perguntas_id")
     private List<Pergunta> listaDePerguntas;
 
-    private LocalDateTime dataDeLeitura;
+    @OneToMany
+    private List<ContagemDePalavras> nuvemDePalavras;
+
+    private LocalDate dataDeLeitura;
 
 }

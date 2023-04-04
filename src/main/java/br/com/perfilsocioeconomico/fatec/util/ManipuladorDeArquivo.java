@@ -40,7 +40,7 @@ public class ManipuladorDeArquivo {
                         // Obtem o valor da célula
                         switch (cell.getCellType()) {
                             case STRING:
-                                cellValue = cell.getStringCellValue();
+                                cellValue = cell.getStringCellValue().trim();
                                 break;
                             case NUMERIC:
                                 cellValue = String.valueOf(cell.getNumericCellValue());

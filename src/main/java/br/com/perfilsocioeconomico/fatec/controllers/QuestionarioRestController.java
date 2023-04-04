@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("questionario")
+@RequestMapping("/rest/questionario")
 @RequiredArgsConstructor
 public class QuestionarioRestController {
     private final QuestionarioService questionarioService;

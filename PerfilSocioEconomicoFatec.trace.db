@@ -137,3 +137,12 @@ insert into tb_pergunta (id, lista_de_resposta, pergunta) values (default, ?, ?)
 2023-04-03 08:37:29 jdbc[14]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TB_RESPOSTA TB_PERGUNTA_LISTA_DE_RESPOSTA [*]TB_PERGUNTA"; SQL statement:
 SELECT * FROM TB_RESPOSTA TB_PERGUNTA_LISTA_DE_RESPOSTA TB_PERGUNTA [42000-214]
+2023-04-03 17:45:21 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DROP [*]ALL OJBECTS"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, VIEW, ROLE, ALIAS, SCHEMA, ALL OBJECTS, DOMAIN, TYPE, DATATYPE, AGGREGATE, SYNONYM"; SQL statement:
+DROP ALL OJBECTS [42001-214]
+2023-04-04 02:05:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_RESPOSTA" not found (this database is empty); SQL statement:
+insert into tb_resposta (id, pergunta, resposta) values (default, ?, ?) [42104-214]
+2023-04-04 02:05:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TB_RESPOSTA" not found (this database is empty); SQL statement:
+insert into tb_resposta (id, pergunta, resposta) values (default, ?, ?) [42104-214]

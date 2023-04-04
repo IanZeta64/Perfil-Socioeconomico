@@ -1,10 +1,10 @@
 package br.com.perfilsocioeconomico.fatec.services;
-
-import br.com.perfilsocioeconomico.fatec.exceptions.QuestionNotFoundException;
+import br.com.perfilsocioeconomico.fatec.exceptions.WordCloudNotFoundException;
 import br.com.perfilsocioeconomico.fatec.model.Estatisticas;
 import br.com.perfilsocioeconomico.fatec.model.Pergunta;
 import br.com.perfilsocioeconomico.fatec.model.Resposta;
 import br.com.perfilsocioeconomico.fatec.repositories.PerguntaRepository;
+import br.com.perfilsocioeconomico.fatec.util.Grafico;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +18,9 @@ public class EstatisticasService {
 
 
     public Estatisticas getStats(Long perguntaId) {
-        Pergunta pergunta = perguntaRepository.findById(perguntaId).orElseThrow(() -> new QuestionNotFoundException("Pergunta nao encontrada"));
-       Map<String, Long> mapRespostas = pergunta.getListaDeResposta().stream().collect(Collectors.groupingBy(Resposta::getResposta, Collectors.counting()));
+        Pergunta pergunta = perguntaRepository.findById(perguntaId).orElseThrow(() -> new WordCloudNotFoundException("Pergunta nao encontrada"));
+       Map<String, Long> mapRespostas = pergunta.getListaDeResposta().stream()
+               .filter(resposta -> !resposta.getResposta().equals("Nenhuma resposta")).collect(Collectors.groupingBy(Resposta::getResposta, Collectors.counting()));
         return new Estatisticas(pergunta.getPergunta(), mapRespostas.entrySet());
-
     }
 }
