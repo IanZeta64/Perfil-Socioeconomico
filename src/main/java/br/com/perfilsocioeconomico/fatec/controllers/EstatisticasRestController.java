@@ -22,11 +22,11 @@ public class EstatisticasRestController {
 //        return estatisticasService.getStatsByQustionTitle(pergunta);
 //    }
 
-    @GetMapping("/swing")
-    public void getStats() {
-        var a = estatisticasService.getAllStats();
-        new InterfaceGrafica(a);
-    }
+//    @GetMapping("/swing")
+//    public void getStats() {
+//        var a = estatisticasService.getAllStats();
+//        new InterfaceGrafica(a);
+//    }
 }
 
 

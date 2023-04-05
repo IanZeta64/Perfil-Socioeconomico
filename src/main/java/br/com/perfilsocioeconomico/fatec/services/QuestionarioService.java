@@ -60,7 +60,7 @@ public class QuestionarioService {
 
         //criacao de contagem de palavras
         List<ContagemDePalavras> contagemDePalavrasList = listaRespostaFinal.stream()
-                .filter(s -> s.length()> 4 && s.contains("r"))
+                .filter(s -> s.length() > 4 && s.contains("r")).map(String::toUpperCase)
                 .collect(Collectors.groupingBy(s -> s, Collectors.counting()))
                 .entrySet().stream().map(entry ->{
                     ContagemDePalavras contagemDePalavras = new ContagemDePalavras();
