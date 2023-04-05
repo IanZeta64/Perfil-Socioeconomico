@@ -1,5 +1,6 @@
 package br.com.perfilsocioeconomico.fatec.util;
 import br.com.perfilsocioeconomico.fatec.model.Estatisticas;
+import org.apache.commons.math3.stat.inference.OneWayAnova;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -18,6 +19,8 @@ import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 public class BubblePanel extends JPanel {
     public BubblePanel(Estatisticas estatisticas) {
@@ -27,19 +30,17 @@ public class BubblePanel extends JPanel {
         double yMin = 0.0; // valor mínimo do eixo Y
         double yMax = 40.0; // valor máximo do eixo Y
 
-        Random random = new Random();
+
         DefaultXYZDataset graph = new DefaultXYZDataset();
-        int i = 0;
+
         var estatisticasOrdenandas = estatisticas.getEstatisticas();
         estatisticasOrdenandas.sort(estatisticas);
         for (int j = 0; j < estatisticasOrdenandas.size(); j++) {
             Long valor = estatisticasOrdenandas.get(j).getValue();
             String chave = estatisticasOrdenandas.get(j).getKey();
             double z = Double.parseDouble(valor.toString()); // tamanho do ponto
-            double x = xMin + random.nextDouble() * (xMax - xMin); // coordenada X aleatória
-            double y = yMin + random.nextDouble() * (yMax - yMin); // coordenada Y aleatória
-
-            System.out.println(x);
+            double x = xMin + ThreadLocalRandom.current().nextDouble() * (xMax - xMin); // coordenada X aleatória
+            double y = yMin + ThreadLocalRandom.current().nextDouble() * (yMax - yMin); // coordenada Y aleatória
             double[][] data = {{x}, {y}, {z}};
             graph.addSeries(chave, data);
         }
@@ -47,7 +48,7 @@ public class BubblePanel extends JPanel {
         JFreeChart grafico = ChartFactory.createBubbleChart(
                 estatisticas.getPergunta(), // título do gráfico
                 "Nuvem de palavras", // nome do eixo X
-                "Contagem", // nome do eixo Y
+                "", // nome do eixo Y
                 graph, // dados
                 PlotOrientation.HORIZONTAL, // orientação do gráfico
                 true, // legenda
@@ -58,7 +59,6 @@ public class BubblePanel extends JPanel {
 // Definir tamanho dos pontos
         XYPlot plot = grafico.getXYPlot();
         XYBubbleRenderer renderer = new XYBubbleRenderer();
-
         renderer.setSeriesVisible(0, true);
         plot.setRenderer(renderer);
 

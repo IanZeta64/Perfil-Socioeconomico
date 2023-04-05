@@ -56,11 +56,13 @@ public class QuestionarioService {
               perguntaRepository.save(pergunta);//salva perguntas
            }
 
+        System.out.println(listaRespostaFinal.size());
 
 
         //criacao de contagem de palavras
         List<ContagemDePalavras> contagemDePalavrasList = listaRespostaFinal.stream()
-                .filter(s -> s.length() > 4 && s.contains("r")).map(String::toUpperCase)
+                .filter(s -> s.length() > 3 || s.contains("r") || s.equalsIgnoreCase("TI"))
+                .map(String::toUpperCase)
                 .collect(Collectors.groupingBy(s -> s, Collectors.counting()))
                 .entrySet().stream().map(entry ->{
                     ContagemDePalavras contagemDePalavras = new ContagemDePalavras();
@@ -79,5 +81,9 @@ public class QuestionarioService {
           questionario.setNuvemDePalavras(contagemDePalavrasList);
           questionario.setDataDeLeitura(LocalDate.now());
           return questionarioRepository.save(questionario);
+    }
+
+    public Boolean emptyDB(){
+        return questionarioRepository.findAll().isEmpty();
     }
 }

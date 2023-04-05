@@ -36,7 +36,8 @@ public class EstatisticasService {
             System.out.println(respostas.get());
             String[] respostasFormatado = respostas.get().split(";");
             mapRespostas = Arrays.stream(respostasFormatado).collect(Collectors.groupingBy(resp -> resp, Collectors.counting()));
-        } else {
+        }
+         else {
             mapRespostas = pergunta.getListaDeResposta().stream()
                     .filter(resposta -> !resposta.getResposta().equals("Nenhuma resposta"))
                     .collect(Collectors.groupingBy(Resposta::getResposta, Collectors.counting()));
@@ -67,7 +68,13 @@ public class EstatisticasService {
                         .reduce(String::concat).orElseThrow(() -> new QuestionNotFoundException("Pergunta nao encontrada"));
                 String[] respostasFormatadoVetor = respostasConcatenada.split(";");
                 mapContagemRespostas = Arrays.stream(respostasFormatadoVetor).collect(Collectors.groupingBy(resp -> resp, Collectors.counting()));
-            } else {
+            }else if (perguntasLista.get(i).getListaDeResposta().stream().anyMatch(resposta -> resposta.getResposta().contains("00:00:00"))){
+                mapContagemRespostas = perguntasLista.get(i).getListaDeResposta().stream()
+                        .filter(resposta -> resposta.getResposta().contains("BR"))
+                        .peek(resposta -> resposta.setResposta(resposta.getResposta().substring(24).trim()))
+                        .collect(Collectors.groupingBy(Resposta::getResposta, Collectors.counting()));
+
+                }else{
                 mapContagemRespostas = perguntasLista.get(i).getListaDeResposta().stream()
                         .filter(resposta -> !resposta.getResposta().equals("Nenhuma resposta"))
                         .collect(Collectors.groupingBy(Resposta::getResposta, Collectors.counting()));
@@ -76,8 +83,11 @@ public class EstatisticasService {
             Estatisticas estatisticas = new Estatisticas(perguntasLista.get(i).getPergunta(), new ArrayList<>(mapContagemRespostas.entrySet()));
             estatisticasMap.put(estatisticas.getPergunta(), estatisticas);
         }
+
+        List<String> palavrasASeremFiltradas = Arrays.asList("PARA", "COMO", "TENHO", "ESTOU", "MEUS", "ONDE", "NESSA",
+                "MINHA", "POR", "QUERO", "MELHOR", "FRANCA", "GOSTO", "PESSOA", "MUITO", "ANOS", "SEMPRE", "ÁREA");
        Set<Map.Entry<String, Long>> contagemDePalavrasMap = contagemDePalavrasRepository.findAll().stream()
-               .filter(contagemDePalavras -> contagemDePalavras.getContagem()> 4)
+               .filter(contagemDePalavras -> !palavrasASeremFiltradas.contains(contagemDePalavras.getPalavra()) && contagemDePalavras.getContagem()> 4)
                .collect(Collectors.toMap(ContagemDePalavras::getPalavra, ContagemDePalavras::getContagem)).entrySet();
         Estatisticas estatisticasContagemPalavras = new Estatisticas();
         estatisticasContagemPalavras.setPergunta("Escreva algumas linhas sobre sua história e seus sonhos de vida.");

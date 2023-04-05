@@ -13,7 +13,8 @@ import java.util.Map;
 public class InterfaceGrafica extends JFrame implements ActionListener {
     private final JLabel label;
     private final JComboBox<String> comboBox;
-    private final JButton button;
+    private final JButton chartButton;
+
 
 private final Map<String, Estatisticas> estatisticasMap;
 
@@ -53,19 +54,19 @@ private final Map<String, Estatisticas> estatisticasMap;
 
         label = new JLabel("Selecione a pergunta:");
         comboBox = new JComboBox<>(QUESTIONARIO_PERGUNTAS);;
-        button = new JButton("Enviar");
+        chartButton = new JButton("Enviar");
 
-        button.addActionListener(this);
+        chartButton.addActionListener(this);
 
         add(label);
         add(comboBox);
-        add(button);
+        add(chartButton);
 
         setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
+        if (e.getSource() == chartButton) {
             String input = String.valueOf(comboBox.getSelectedItem());
             if (input.equals("Escreva algumas linhas sobre sua história e seus sonhos de vida."))
                 new Bubble(estatisticasMap.get(input));
