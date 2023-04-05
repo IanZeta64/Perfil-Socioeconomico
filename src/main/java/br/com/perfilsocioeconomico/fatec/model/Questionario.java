@@ -23,7 +23,6 @@ public class Questionario {
     private Long id;
 
     @OneToMany
-    @JoinColumn(name = "lista_de_perguntas_id")
     private List<Pergunta> listaDePerguntas;
 
     @OneToMany

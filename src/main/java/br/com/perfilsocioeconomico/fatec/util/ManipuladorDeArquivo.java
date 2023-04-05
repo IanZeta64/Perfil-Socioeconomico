@@ -43,7 +43,11 @@ public class ManipuladorDeArquivo {
                                 cellValue = cell.getStringCellValue().trim();
                                 break;
                             case NUMERIC:
+                                if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)){
+                                   cellValue = cell.getDateCellValue().toString();
+                                }else{
                                 cellValue = String.valueOf(cell.getNumericCellValue());
+                            }
                                 break;
                             case BOOLEAN:
                                 cellValue = String.valueOf(cell.getBooleanCellValue());
