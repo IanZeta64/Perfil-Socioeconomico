@@ -1,9 +1,11 @@
 package br.com.perfilsocioeconomico.fatec.services;
 import br.com.perfilsocioeconomico.fatec.exceptions.QuestionNotFoundException;
 import br.com.perfilsocioeconomico.fatec.exceptions.WordCloudNotFoundException;
+import br.com.perfilsocioeconomico.fatec.model.ContagemDePalavras;
 import br.com.perfilsocioeconomico.fatec.model.Estatisticas;
 import br.com.perfilsocioeconomico.fatec.model.Pergunta;
 import br.com.perfilsocioeconomico.fatec.model.Resposta;
+import br.com.perfilsocioeconomico.fatec.repositories.ContagemDePalavrasRepository;
 import br.com.perfilsocioeconomico.fatec.repositories.PerguntaRepository;
 import br.com.perfilsocioeconomico.fatec.util.InterfaceGrafica;
 import jakarta.annotation.PostConstruct;
@@ -18,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EstatisticasService {
     private final PerguntaRepository perguntaRepository;
-
+    private final ContagemDePalavrasRepository contagemDePalavrasRepository;
 
 
     public Estatisticas getStatsById(Long perguntaId) {
@@ -41,7 +43,7 @@ public class EstatisticasService {
         }
 
 
-        Estatisticas estatisticas = new Estatisticas(pergunta.getPergunta(), mapRespostas.entrySet());
+        Estatisticas estatisticas = new Estatisticas(pergunta.getPergunta(), new ArrayList<>(mapRespostas.entrySet()));
         return estatisticas;
     }
 
@@ -71,9 +73,16 @@ public class EstatisticasService {
                         .collect(Collectors.groupingBy(Resposta::getResposta, Collectors.counting()));
             }
 
-            Estatisticas estatisticas = new Estatisticas(perguntasLista.get(i).getPergunta(), mapContagemRespostas.entrySet());
+            Estatisticas estatisticas = new Estatisticas(perguntasLista.get(i).getPergunta(), new ArrayList<>(mapContagemRespostas.entrySet()));
             estatisticasMap.put(estatisticas.getPergunta(), estatisticas);
         }
+       Set<Map.Entry<String, Long>> contagemDePalavrasMap = contagemDePalavrasRepository.findAll().stream()
+               .filter(contagemDePalavras -> contagemDePalavras.getContagem()> 4)
+               .collect(Collectors.toMap(ContagemDePalavras::getPalavra, ContagemDePalavras::getContagem)).entrySet();
+        Estatisticas estatisticasContagemPalavras = new Estatisticas();
+        estatisticasContagemPalavras.setPergunta("Escreva algumas linhas sobre sua história e seus sonhos de vida.");
+        estatisticasContagemPalavras.setEstatisticas(new ArrayList<>(contagemDePalavrasMap));
+        estatisticasMap.put(estatisticasContagemPalavras.getPergunta(), estatisticasContagemPalavras);
     return estatisticasMap;
     }
 }

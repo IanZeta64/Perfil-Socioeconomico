@@ -1,6 +1,7 @@
 package br.com.perfilsocioeconomico.fatec.util;
 
 import br.com.perfilsocioeconomico.fatec.model.Estatisticas;
+import org.jfree.chart.plot.XYPlot;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener {
 private final Map<String, Estatisticas> estatisticasMap;
 
     public InterfaceGrafica(Map<String, Estatisticas> estatisticasMap) {
-        super("Interface Gráfica");
+        super("Interface Gráfica - Perfil Socioeconomico");
         this.estatisticasMap = estatisticasMap;
 
 
@@ -44,8 +45,9 @@ private final Map<String, Estatisticas> estatisticasMap;
                 "Qual religião você professa?*", "Você consome fontes de entretenimento?", "Quais fontes de entretenimento cultural você usa",
                 "Como conheceu a FATEC Franca?", "Você já possui alguma Graduação?", "Você já possui alguma Pós-graduação?",
                 "Porque você escolheu este curso?", "Qual sua maior expectativa quanto ao curso?", "Qual sua expectativa após se formar?",
-                "Você já estudou nesta escola?", "Você já fez algum curso técnico?", "Qual o meio de transporte você usa para vir à escola?"};
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                "Você já estudou nesta escola?", "Você já fez algum curso técnico?", "Qual o meio de transporte você usa para vir à escola?",
+                "Escreva algumas linhas sobre sua história e seus sonhos de vida."};
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setSize(500, 500);
         setLayout(new FlowLayout());
 
@@ -65,9 +67,11 @@ private final Map<String, Estatisticas> estatisticasMap;
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
             String input = String.valueOf(comboBox.getSelectedItem());
-            // chamar o método que faz a requisição
-            new Grafico(estatisticasMap.get(input));
-            // e monta o gráfico com o valor recebido
+            if (input.equals("Escreva algumas linhas sobre sua história e seus sonhos de vida."))
+                new Bubble(estatisticasMap.get(input));
+            else {
+                new Grafico(estatisticasMap.get(input));
+            }
         }
     }
 
