@@ -8,7 +8,7 @@
 //import org.springframework.web.bind.annotation.RequestMapping;
 //
 //@Controller
-//@RequestMapping("/graficos")
+//@RequestMapping("/graficos.html")
 //@RequiredArgsConstructor
 //public class WebController {
 //

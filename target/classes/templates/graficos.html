@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil Socioeconomico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <script rel="script" src="/js/Chart.js"></script>
+</head>
+<body>
+<div th:with="estatisticas=${'{'}'labels': [], 'data': []}">
+    <!-- Percorre a lista de estatísticas e adiciona os dados à variável "estatisticas" -->
+    <th:block th:each="estatistica : ${estatisticasJson['estatisticas']}">
+        <th:block th:each="(nome, valor) : ${estatistica}">
+            <div th:with="estatisticas=${estatisticas.add({'label': nome, 'value': valor})}">
+            </div>
+            </th:each>
+            </th:each>
+            <!-- Cria um elemento canvas para renderizar o gráfico -->
+            <canvas id="grafico"></canvas>
+            <!-- Script para gerar o gráfico -->
+            <script th:inline="javascript">
+                /* Cria um objeto com as estatísticas */
+                var estatisticas = [[${estatisticas}]];
+                /* Obtém o elemento canvas para renderizar o gráfico */
+                var canvas = document.getElementById('grafico');
+                /* Cria um novo gráfico do tipo "bar" */
+                var grafico = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: estatisticas.map(function (item) { return item.label; }),
+                        datasets: [{
+                            data: estatisticas.map(function (item) { return item.value; }),
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: [[${estatisticasJson['pergunta']}]]
+                        }
+                    }
+                });
+            </script>
+</div>
+</body>
+</html>
