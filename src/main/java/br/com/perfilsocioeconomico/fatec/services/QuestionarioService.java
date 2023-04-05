@@ -48,7 +48,6 @@ public class QuestionarioService {
                        listaRespostaFinal.addAll(ultimaRsposta);
                    }
                }
-
                Pergunta pergunta  = new Pergunta();
                pergunta.setPergunta(listaComListaDeRespostasLeitura.get(0).get(i));
                var respostasLista = respostaRepository.findAll().stream()
