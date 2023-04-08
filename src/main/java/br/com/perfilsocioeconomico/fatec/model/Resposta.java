@@ -21,9 +21,6 @@ public class Resposta {
     private String resposta;
 
     private String pergunta;
+    private String ano;
 
-    public Resposta(String resposta, String pergunta) {
-        this.resposta = resposta;
-        this.pergunta = pergunta;
-    }
 }

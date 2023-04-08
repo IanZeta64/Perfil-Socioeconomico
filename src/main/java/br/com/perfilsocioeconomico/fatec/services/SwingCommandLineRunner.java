@@ -1,33 +1,22 @@
 package br.com.perfilsocioeconomico.fatec.services;
-
-import br.com.perfilsocioeconomico.fatec.model.Estatisticas;
-import br.com.perfilsocioeconomico.fatec.util.InterfaceGrafica;
+import br.com.perfilsocioeconomico.fatec.view.InterfaceGrafica;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class SwingCommandLineRunner implements CommandLineRunner {
 
-    @Autowired
-    private EstatisticasService estatisticasService;
-@Autowired
-    private QuestionarioService questionarioService;
-
-
+    private final QuestionarioService questionarioService;
+    private final EstatisticasService estatisticasService;
     private boolean hasRun = false;
 
     @Override
     public void run(String... args) throws Exception {
         if (!hasRun) {
-           boolean emptyDB = questionarioService.emptyDB();
-           if(emptyDB){ questionarioService.save();}
-            Map<String, Estatisticas> estatisticasMap = estatisticasService.getAllStats();
-            new InterfaceGrafica(estatisticasMap);
+            new InterfaceGrafica(this.questionarioService, this.estatisticasService);
             hasRun = true;
         }
     }
