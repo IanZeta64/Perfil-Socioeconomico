@@ -2,23 +2,24 @@ package br.com.perfilsocioeconomico.fatec.util;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Component
 public class ManipuladorDeArquivo {
 
-    public void excelToCSV() {
+    public void excelToCSV(File excel) {
         try {
             // Lê o arquivo Excel
-            Workbook workbook = WorkbookFactory.create(Files.newInputStream(Paths.get("C:\\Users\\Ian Paschoal\\Desktop\\trabalho Roland\\perfilsocieconomico-leitura.xlsx")));
+            Workbook workbook = WorkbookFactory.create(excel);
+
+//                    Files.newInputStream(Paths.get("src/main/java/br/com/perfilsocioeconomico/fatec/util/excel/perfilsocieconomico-leitura.xlsx")));
 
             // Seleciona a primeira planilha
             Sheet sheet = workbook.getSheetAt(0);
@@ -74,14 +75,14 @@ public class ManipuladorDeArquivo {
 
 
             // Escreve as linhas no arquivo CSV
-            Files.write(Paths.get("C:\\Users\\Ian Paschoal\\Desktop\\trabalho Roland\\perfilsocieconomico-csv.csv"), lines, StandardCharsets.UTF_8);
+            Files.write(Paths.get("src/main/java/br/com/perfilsocioeconomico/fatec/util/csv/perfilsocieconomico-csv.csv"), lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
    public List<List<String>> lerArquivo() {
-       Path path = Path.of("C:\\Users\\Ian Paschoal\\Desktop\\trabalho Roland\\perfilsocieconomico-csv.csv");
+       Path path = Path.of("src/main/java/br/com/perfilsocioeconomico/fatec/util/csv/perfilsocieconomico-csv.csv");
        List<String> listaLinhasQuestionario;
        try {
            listaLinhasQuestionario = Files.readAllLines(path);
@@ -94,24 +95,4 @@ public class ManipuladorDeArquivo {
        }).toList();
    }
 
-
-
-
-//           Map<String, List<String>> mapChavePerguntaValorListaDeRespostas = new LinkedHashMap<>();
-//           for (int i = 0; i < listaComListaDeRespostas.size(); i++) {
-//               String chave = listaComListaDeRespostas.get(0).get(i);
-//               List<String> listaRespostas = new ArrayList<>();
-//               for (List<String> listaResposta : listaComListaDeRespostas) {
-//                   listaRespostas.add(listaResposta.get(i));
-//               }
-//               mapChavePerguntaValorListaDeRespostas.put(chave, listaRespostas.stream().skip(1).toList());
-//               listaRespostas.clear();
-//           }
-//          mapChavePerguntaValorListaDeRespostas.entrySet().forEach(System.out::println);
-
-
-//       } catch (IOException e) {
-//           throw new RuntimeException(e);
-//       }
-//   }
 }

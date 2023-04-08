@@ -27,5 +27,6 @@ public class ContagemDePalavras {
 
     private Long contagem;
 
+    private String ano;
 
 }

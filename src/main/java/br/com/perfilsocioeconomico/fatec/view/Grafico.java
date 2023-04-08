@@ -1,4 +1,4 @@
-package br.com.perfilsocioeconomico.fatec.util;
+package br.com.perfilsocioeconomico.fatec.view;
 
 import br.com.perfilsocioeconomico.fatec.model.Estatisticas;
 
@@ -11,7 +11,7 @@ public class Grafico extends JFrame {
 
     setTitle("Perfil Socioeconomico");
 
-    setSize(1200,1000);
+    setSize(1100,900);
 
     setLocationRelativeTo(null);
 

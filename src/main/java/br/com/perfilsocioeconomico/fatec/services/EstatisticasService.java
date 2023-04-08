@@ -7,8 +7,6 @@ import br.com.perfilsocioeconomico.fatec.model.Pergunta;
 import br.com.perfilsocioeconomico.fatec.model.Resposta;
 import br.com.perfilsocioeconomico.fatec.repositories.ContagemDePalavrasRepository;
 import br.com.perfilsocioeconomico.fatec.repositories.PerguntaRepository;
-import br.com.perfilsocioeconomico.fatec.util.InterfaceGrafica;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,8 +54,9 @@ public class EstatisticasService {
     }
 
     @Transactional
-    public Map<String, Estatisticas> getAllStats() {
-        List<Pergunta> perguntasLista = perguntaRepository.findAll();
+    public Map<String, Estatisticas> getAllStats(String ano) {
+        List<Pergunta> perguntasLista = perguntaRepository.findAll().stream().filter(pergunta ->
+                pergunta.getAno().equals(ano)).toList();
        Map<String, Estatisticas> estatisticasMap = new HashMap<>();
         for (int i = 0; i < perguntasLista.size()-1; i++) {
             Map<String, Long> mapContagemRespostas;
@@ -85,9 +84,10 @@ public class EstatisticasService {
         }
 
         List<String> palavrasASeremFiltradas = Arrays.asList("PARA", "COMO", "TENHO", "ESTOU", "MEUS", "ONDE", "NESSA",
-                "MINHA", "POR", "QUERO", "MELHOR", "FRANCA", "GOSTO", "PESSOA", "MUITO", "ANOS", "SEMPRE", "ÁREA");
+                "MINHA", "POR", "MELHOR", "FRANCA", "GOSTO", "PESSOA", "MUITO", "ANOS", "SEMPRE", "ÁREA", "VIDA", "MAIOR",
+                "SEGUIR", "MOMENTO", "QUERO", "AREA", "GOSTEI","MAIS", "HOJE", "ISSO", "SENDO", "ATUALMENTE", "NASCI");
        Set<Map.Entry<String, Long>> contagemDePalavrasMap = contagemDePalavrasRepository.findAll().stream()
-               .filter(contagemDePalavras -> !palavrasASeremFiltradas.contains(contagemDePalavras.getPalavra()) && contagemDePalavras.getContagem()> 4)
+               .filter(contagemDePalavras -> !palavrasASeremFiltradas.contains(contagemDePalavras.getPalavra()) && contagemDePalavras.getContagem()>= 3)
                .collect(Collectors.toMap(ContagemDePalavras::getPalavra, ContagemDePalavras::getContagem)).entrySet();
         Estatisticas estatisticasContagemPalavras = new Estatisticas();
         estatisticasContagemPalavras.setPergunta("Escreva algumas linhas sobre sua história e seus sonhos de vida.");

@@ -28,6 +28,6 @@ public class Questionario {
     @OneToMany
     private List<ContagemDePalavras> nuvemDePalavras;
 
-    private LocalDate dataDeLeitura;
+    private String ano;
 
 }

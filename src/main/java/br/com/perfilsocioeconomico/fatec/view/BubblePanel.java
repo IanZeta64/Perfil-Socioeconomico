@@ -1,50 +1,55 @@
-package br.com.perfilsocioeconomico.fatec.util;
+package br.com.perfilsocioeconomico.fatec.view;
 import br.com.perfilsocioeconomico.fatec.model.Estatisticas;
-import org.apache.commons.math3.stat.inference.OneWayAnova;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.labels.BubbleXYItemLabelGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYBubbleRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultXYZDataset;
-import org.jfree.data.xy.XYZDataset;
-
 import javax.swing.*;
-import java.awt.*;
-import java.text.DecimalFormat;
-import java.util.Comparator;
-import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.random.RandomGenerator;
 
 public class BubblePanel extends JPanel {
     public BubblePanel(Estatisticas estatisticas) {
 
-        double xMin = 0.0; // valor mínimo do eixo X
-        double xMax = 40.0; // valor máximo do eixo X
-        double yMin = 0.0; // valor mínimo do eixo Y
-        double yMax = 40.0; // valor máximo do eixo Y
-
-
         DefaultXYZDataset graph = new DefaultXYZDataset();
+
+        double xMin = 0.0; // valor mínimo do eixo X
+        double xMax = 1000.0; // valor máximo do eixo X
+        double yMin = 0.0; // valor mínimo do eixo Y
+        double yMax = 1000.0; // valor máximo do eixo Y
 
         var estatisticasOrdenandas = estatisticas.getEstatisticas();
         estatisticasOrdenandas.sort(estatisticas);
-        for (int j = 0; j < estatisticasOrdenandas.size(); j++) {
-            Long valor = estatisticasOrdenandas.get(j).getValue();
-            String chave = estatisticasOrdenandas.get(j).getKey();
-            double z = Double.parseDouble(valor.toString()); // tamanho do ponto
-            double x = xMin + ThreadLocalRandom.current().nextDouble() * (xMax - xMin); // coordenada X aleatória
-            double y = yMin + ThreadLocalRandom.current().nextDouble() * (yMax - yMin); // coordenada Y aleatória
-            double[][] data = {{x}, {y}, {z}};
+
+        Random random = new Random();
+
+        for (int i = 0; i < estatisticasOrdenandas.size(); i++) {
+
+            double valor = Math.pow(Double.parseDouble(String.valueOf(estatisticasOrdenandas.get(i).getValue())), 1.3) * 10;
+            String chave = estatisticasOrdenandas.get(i).getKey() + ": " + estatisticasOrdenandas.get(i).getValue();
+            double x = 150 + (850 - 150) * random.nextDouble();
+            double y = 150 + (850 - 150) * random.nextDouble();
+
+//
+//            if (i == 0) {
+//                x = eixoFixo;
+//                y = eixoFixo;
+//                acumulador = 100;
+//            }
+//            else {
+//                double fator = 1 + acumulador / 2000; // ajuste o valor 10000 para controlar a velocidade de afastamento da espiral
+//                double angulo = i * Math.PI / 11 + acumulador * 0.00099; // ajuste o valor 0.1 para controlar o afastamento do centro
+//                x = eixoFixo + fator * acumulador / i * Math.cos(angulo);
+//                y = eixoFixo + fator * acumulador / i * Math.sin(angulo);
+//                acumulador += valor;
+//            }
+
+            double[][] data = {{x}, {y}, {valor}};
             graph.addSeries(chave, data);
         }
-
         JFreeChart grafico = ChartFactory.createBubbleChart(
                 estatisticas.getPergunta(), // título do gráfico
                 "Nuvem de palavras", // nome do eixo X
@@ -61,19 +66,20 @@ public class BubblePanel extends JPanel {
         XYBubbleRenderer renderer = new XYBubbleRenderer();
         renderer.setSeriesVisible(0, true);
         plot.setRenderer(renderer);
-
+//
         NumberAxis xAxis = new NumberAxis("X Axis");
         xAxis.setRange(xMin, xMax); // definindo o limite mínimo e máximo do eixo X
 
         NumberAxis yAxis = new NumberAxis("Y Axis");
         yAxis.setRange(yMin, yMax); // definindo o limite mínimo e máximo do eixo Y
-
-        NumberAxis zAxis = new NumberAxis("Z Axis");
-
+//
+//        NumberAxis zAxis = new NumberAxis("Z Axis");
+//
         plot.setDomainAxis(xAxis);
         plot.setRangeAxis(yAxis);
-        plot.setDomainAxis(zAxis);
+//        plot.setDomainAxis(zAxis);
 
+//
         ChartPanel panel = new ChartPanel(grafico);
         add(panel);
     }

@@ -24,4 +24,6 @@ public class Pergunta {
 
     @OneToMany
     private List<Resposta> listaDeResposta;
+
+    private String ano;
 }
